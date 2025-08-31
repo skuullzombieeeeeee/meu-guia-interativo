@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo de Laboratório - Windows no VirtualBox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin: auto; height: 300px; }
+    </style>
+    <!-- Chosen Palette: Slate & Teal -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling guide. The structure is task-oriented, mirroring a real-world workflow: Objectives -> Steps -> Deliverables -> Evaluation. A persistent top navigation allows users to jump between sections, making it more efficient than a linear document. This structure was chosen for its clarity and intuitive flow for a student completing a lab assignment. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Etapas do Laboratório -> Goal: Guide User -> Presentation: Numbered, expandable sections -> Interaction: Click to toggle details -> Justification: Prevents information overload, allowing users to focus on one step at a time.
+        - Report Info: Entregável -> Goal: Track Progress -> Presentation: Interactive Checklist -> Interaction: Click to check/uncheck items -> Justification: Provides a sense of accomplishment and clarity on what needs to be done.
+        - Report Info: Critérios de Avaliação -> Goal: Inform on Grading -> Presentation: Doughnut Chart (Chart.js) -> Interaction: Hover to see details -> Justification: A doughnut chart is excellent for showing part-to-whole relationships, making the weight of each criterion immediately obvious and more engaging than a simple table.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-teal-600">Guia de Laboratório</span>
+                </div>
+                <div class="hidden md:block">
+                    <nav class="flex items-center space-x-4">
+                        <a href="#objetivos" class="text-slate-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Objetivos</a>
+                        <a href="#passos" class="text-slate-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Passo a Passo</a>
+                        <a href="#entregavel" class="text-slate-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Entregável</a>
+                        <a href="#avaliacao" class="text-slate-600 hover:text-teal-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Avaliação</a>
+                    </nav>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-600 hover:text-teal-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500">
+                        <span class="sr-only">Abrir menu principal</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#objetivos" class="text-slate-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium transition-colors">Objetivos</a>
+                <a href="#passos" class="text-slate-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium transition-colors">Passo a Passo</a>
+                <a href="#entregavel" class="text-slate-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium transition-colors">Entregável</a>
+                <a href="#avaliacao" class="text-slate-600 hover:text-teal-600 block px-3 py-2 rounded-md text-base font-medium transition-colors">Avaliação</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">Instalação do Windows no VirtualBox</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Um guia interativo para completar sua atividade de laboratório com sucesso.</p>
+        </div>
+
+        <section id="objetivos" class="mb-16 scroll-mt-24">
+            <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">🎯 Objetivos da Atividade</h2>
+                <div class="space-y-4 text-slate-700">
+                    <p><strong class="font-semibold text-teal-700">Objetivo Geral:</strong> Instalar o Windows 10 ou 11 em uma máquina virtual (VM) no VirtualBox, utilizando um arquivo ISO.</p>
+                    <p><strong class="font-semibold text-teal-700">Objetivos Específicos:</strong></p>
+                    <ul class="list-disc list-inside pl-4 space-y-2">
+                        <li>Aprender a criar e configurar uma VM com recursos adequados.</li>
+                        <li>Executar o processo de instalação do Windows a partir da ISO.</li>
+                        <li>Realizar as configurações iniciais do sistema operacional.</li>
+                        <li>Compreender as vantagens de utilizar máquinas virtuais.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="passos" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-900 mb-8 text-center">📋 Passo a Passo Detalhado</h2>
+            <div class="space-y-4">
+                <div class="step-container bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <button class="step-header w-full text-left p-5 flex justify-between items-center hover:bg-slate-50 focus:outline-none focus:bg-slate-100 transition-colors">
+                        <span class="text-lg font-semibold text-teal-700">Passo 1: Criação da Máquina Virtual</span>
+                        <span class="arrow text-2xl text-slate-500 transform transition-transform">▼</span>
+                    </button>
+                    <div class="step-content hidden p-5 border-t border-slate-200">
+                        <ul class="list-decimal list-inside space-y-2 text-slate-700">
+                            <li>Abra o VirtualBox e clique em "Novo".</li>
+                            <li><strong>Nome:</strong> `Windows_VM`</li>
+                            <li><strong>Tipo:</strong> Microsoft Windows</li>
+                            <li><strong>Versão:</strong> Windows 10 ou 11 (64-bit)</li>
+                            <li><strong>RAM:</strong> Pelo menos 2GB (4GB recomendado).</li>
+                            <li><strong>Disco Rígido:</strong> Criar novo, tipo VDI, dinâmico, com no mínimo 20GB.</li>
+                            <li><strong>Processadores:</strong> 2 núcleos, se disponível.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <button class="step-header w-full text-left p-5 flex justify-between items-center hover:bg-slate-50 focus:outline-none focus:bg-slate-100 transition-colors">
+                        <span class="text-lg font-semibold text-teal-700">Passo 2: Configuração da ISO</span>
+                        <span class="arrow text-2xl text-slate-500 transform transition-transform">▼</span>
+                    </button>
+                    <div class="step-content hidden p-5 border-t border-slate-200">
+                        <p class="text-slate-700">Acesse as configurações da VM, vá para a aba "Armazenamento", clique no ícone de CD e selecione sua imagem ISO do Windows.</p>
+                    </div>
+                </div>
+
+                <div class="step-container bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <button class="step-header w-full text-left p-5 flex justify-between items-center hover:bg-slate-50 focus:outline-none focus:bg-slate-100 transition-colors">
+                        <span class="text-lg font-semibold text-teal-700">Passo 3: Início da Instalação</span>
+                        <span class="arrow text-2xl text-slate-500 transform transition-transform">▼</span>
+                    </button>
+                    <div class="step-content hidden p-5 border-t border-slate-200">
+                        <p class="text-slate-700">Inicie a VM e siga os passos do instalador do Windows: selecionar idioma, escolher instalação personalizada e formatar o disco virtual.</p>
+                    </div>
+                </div>
+
+                <div class="step-container bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <button class="step-header w-full text-left p-5 flex justify-between items-center hover:bg-slate-50 focus:outline-none focus:bg-slate-100 transition-colors">
+                        <span class="text-lg font-semibold text-teal-700">Passo 4: Configuração Inicial do Windows</span>
+                        <span class="arrow text-2xl text-slate-500 transform transition-transform">▼</span>
+                    </button>
+                    <div class="step-content hidden p-5 border-t border-slate-200">
+                        <p class="text-slate-700">Crie sua conta de usuário, defina uma senha e configure as opções de privacidade conforme solicitado.</p>
+                    </div>
+                </div>
+
+                <div class="step-container bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <button class="step-header w-full text-left p-5 flex justify-between items-center hover:bg-slate-50 focus:outline-none focus:bg-slate-100 transition-colors">
+                        <span class="text-lg font-semibold text-teal-700">Passo 5: Instalação dos Adicionais para Convidado</span>
+                        <span class="arrow text-2xl text-slate-500 transform transition-transform">▼</span>
+                    </button>
+                    <div class="step-content hidden p-5 border-t border-slate-200">
+                        <p class="text-slate-700">Com o Windows rodando, vá ao menu "Dispositivos" > "Inserir imagem de CD dos Adicionais para Convidado". Execute o instalador dentro da VM para melhorar a integração (resolução, pastas compartilhadas, etc.).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="entregavel" class="mb-16 scroll-mt-24">
+             <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">📦 Checklist do Entregável</h2>
+                <p class="text-slate-600 mb-6">Marque os itens abaixo conforme for completando seu relatório em PDF.</p>
+                <div id="checklist" class="space-y-3">
+                    <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Nome e data no relatório.</span>
+                    </label>
+                    <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Captura de tela da criação da VM.</span>
+                    </label>
+                    <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Captura de tela da instalação do Windows.</span>
+                    </label>
+                    <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Captura de tela da tela inicial do Windows.</span>
+                    </label>
+                     <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Descrição resumida de cada etapa.</span>
+                    </label>
+                     <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Relato de dificuldades e soluções (se houver).</span>
+                    </label>
+                     <label class="flex items-center p-4 rounded-md border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+                        <span class="ml-3 text-slate-700">Especificações da VM criada.</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <section id="avaliacao" class="scroll-mt-24">
+             <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6 text-center">📊 Critérios de Avaliação</h2>
+                <div class="chart-container">
+                    <canvas id="evaluationChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-100 border-t border-slate-200 mt-16">
+        <div class="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
+            <p>Guia Interativo de Laboratório. Criado para facilitar o aprendizado.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const stepHeaders = document.querySelectorAll('.step-header');
+            stepHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const arrow = header.querySelector('.arrow');
+                    content.classList.toggle('hidden');
+                    arrow.classList.toggle('rotate-180');
+                });
+            });
+
+            const checklistItems = document.querySelectorAll('#checklist input[type="checkbox"]');
+            checklistItems.forEach(item => {
+                item.addEventListener('change', (e) => {
+                    const label = e.target.parentElement;
+                    if (e.target.checked) {
+                        label.classList.add('bg-teal-50', 'border-teal-200');
+                        label.querySelector('span').classList.add('line-through', 'text-slate-500');
+                    } else {
+                        label.classList.remove('bg-teal-50', 'border-teal-200');
+                        label.querySelector('span').classList.remove('line-through', 'text-slate-500');
+                    }
+                });
+            });
+            
+            const ctx = document.getElementById('evaluationChart').getContext('2d');
+            const evaluationChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Instalação Correta (VM e SO)', 'Organização do Relatório', 'Resolução de Problemas', 'Participação e Colaboração'],
+                    datasets: [{
+                        label: 'Peso na Avaliação',
+                        data: [40, 30, 20, 10],
+                        backgroundColor: [
+                            '#0d9488', // teal-600
+                            '#14b8a6', // teal-500
+                            '#5eead4', // teal-300
+                            '#99f6e4'  // teal-200
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 12 },
+                                color: '#475569', // slate-600
+                                padding: 20,
+                                boxWidth: 12,
+                                usePointStyle: true,
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
